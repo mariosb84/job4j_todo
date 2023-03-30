@@ -7,6 +7,7 @@ import ru.job4j.model.Task;
 import ru.job4j.repository.TaskRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @ThreadSafe
 @Service
@@ -34,7 +35,7 @@ public class SimpleTaskService implements TaskService {
     }
 
     @Override
-    public Task add(Task task) {
+    public Optional<Task> add(Task task) {
         return store.add(task);
     }
 
@@ -44,7 +45,7 @@ public class SimpleTaskService implements TaskService {
     }
 
     @Override
-    public Task findById(int id) {
+    public Optional<Task> findById(int id) {
         return store.findById(id);
     }
 

@@ -9,6 +9,7 @@ import ru.job4j.model.Task;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @AllArgsConstructor
@@ -24,7 +25,7 @@ public class TaskRepositoryHbt implements TaskRepository {
             session.beginTransaction();
             Query query = session.createQuery(
                     "from Task order by id");
-            result = (query.list());
+            result = query.list();
             session.getTransaction().commit();
         } catch (Exception e) {
             session.getTransaction().rollback();
@@ -73,7 +74,7 @@ public class TaskRepositoryHbt implements TaskRepository {
     }
 
     @Override
-    public Task add(Task task) {
+    public Optional<Task> add(Task task) {
         Session session = sf.openSession();
         try {
             session.beginTransaction();
@@ -84,7 +85,7 @@ public class TaskRepositoryHbt implements TaskRepository {
         } finally {
             session.close();
         }
-        return task;
+        return Optional.of(task);
     }
 
     @Override
@@ -108,15 +109,15 @@ public class TaskRepositoryHbt implements TaskRepository {
     }
 
     @Override
-    public Task findById(int id) {
-        Task result = new Task();
+    public Optional<Task> findById(int id) {
+        Optional<Task> result = Optional.empty();
         Session session = sf.openSession();
         try {
             session.beginTransaction();
             Query<Task> query = session.createQuery(
                     "from Task as t where t.id = :fId", Task.class);
             query.setParameter("fId", id);
-            result = query.uniqueResult();
+            result = query.uniqueResultOptional();
             session.getTransaction().commit();
         } catch (Exception e) {
             session.getTransaction().rollback();

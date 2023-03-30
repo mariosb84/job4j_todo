@@ -87,7 +87,9 @@ public class TaskController {
 
     @PostMapping("/doneTask{taskId}")
     public String doneTask(@PathVariable("taskId") int id) {
-        taskService.findById(id).setDone(true);
+        if (taskService.findById(id).isPresent()) {
+            taskService.findById(id).get().setDone(true);
+        }
         return "redirect:/taskList";
     }
 
