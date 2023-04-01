@@ -74,7 +74,7 @@ public class TaskRepositoryHbt implements TaskRepository {
     }
 
     @Override
-    public Optional<Task> add(Task task) {
+    public Task add(Task task) {
         Session session = sf.openSession();
         try {
             session.beginTransaction();
@@ -85,27 +85,29 @@ public class TaskRepositoryHbt implements TaskRepository {
         } finally {
             session.close();
         }
-        return Optional.of(task);
+        return task;
     }
 
     @Override
-    public void update(Task task, int id) {
+    public boolean update(Task task, int id) {
+        boolean result = false;
         Session session = sf.openSession();
         try {
             session.beginTransaction();
-            session.createQuery(
+            result = session.createQuery(
                     "UPDATE Task SET description = :fDesc, created = : fCreated, done =: fDone WHERE id = :fId")
                     .setParameter("fDesc", task.getDescription())
                     .setParameter("fCreated", task.getCreated())
                     .setParameter("fDone", task.isDone())
                     .setParameter("fId", id)
-                    .executeUpdate();
+                    .executeUpdate() > 0;
             session.getTransaction().commit();
         } catch (Exception e) {
             session.getTransaction().rollback();
         } finally {
             session.close();
         }
+        return result;
     }
 
     @Override
@@ -147,20 +149,22 @@ public class TaskRepositoryHbt implements TaskRepository {
     }
 
     @Override
-    public void delete(int id) {
+    public boolean delete(int id) {
+        boolean result = false;
         Session session = sf.openSession();
         try {
             session.beginTransaction();
-             session.createQuery(
+             result = session.createQuery(
                     "DELETE Task WHERE id = :fId")
                     .setParameter("fId", id)
-                    .executeUpdate();
+                    .executeUpdate() > 0;
             session.getTransaction().commit();
         } catch (Exception e) {
             session.getTransaction().rollback();
         } finally {
             session.close();
         }
+        return result;
     }
 
 }

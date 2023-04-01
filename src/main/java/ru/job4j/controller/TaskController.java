@@ -3,19 +3,15 @@ package ru.job4j.controller;
 import net.jcip.annotations.ThreadSafe;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import ru.job4j.model.Task;
 import ru.job4j.service.TaskService;
-import ru.job4j.utilites.Sessions;
 
-import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
 
 @ThreadSafe
 @Controller
+@RequestMapping("/tasks")
 public class TaskController {
 
     private final TaskService taskService;
@@ -24,53 +20,30 @@ public class TaskController {
         this.taskService = taskService;
     }
 
-    @GetMapping("/taskList")
-    public String index(Model model, HttpSession session) {
-        model.addAttribute("tasks", taskService.findAll());
-        Sessions.taskSession(model, session);
-        return "taskList";
+    @GetMapping("/taskDesc/{id}")
+    public String getById(Model model, @PathVariable int id) {
+      return findById(model, id, "/tasks/taskDesc");
     }
 
-    @GetMapping("/taskListCompleted")
-    public String indexCompleted(Model model, HttpSession session) {
-        model.addAttribute("tasks", taskService.findAllCompleted());
-        Sessions.taskSession(model, session);
-        return "taskList";
+    @GetMapping("/formUpdateTask/{id}")
+    public String formUpdateTask(Model model, @PathVariable int id) {
+        return findById(model, id, "/tasks/editTask");
     }
 
-    @GetMapping("/taskListNotCompleted")
-    public String indexNotCompleted(Model model, HttpSession session) {
-        model.addAttribute("tasks", taskService.findAllNotCompleted());
-        Sessions.taskSession(model, session);
-        return "taskList";
-    }
-
-    @GetMapping("/taskDesc/{taskId}")
-    public String getTaskDesc(Model model, @PathVariable("taskId") int id, HttpSession session) {
-        model.addAttribute("task", taskService.findById(id));
-        Sessions.taskSession(model, session);
-        return "taskDesc";
-    }
-
-    @GetMapping("/editTask/{taskId}")
-    public String formUpdateTask(Model model, @PathVariable("taskId") int id, HttpSession session) {
-        model.addAttribute("task", taskService.findById(id));
-        Sessions.taskSession(model, session);
-        return "editTask";
-    }
-
-    @PostMapping("/editTask")
-    public String editTask(@ModelAttribute Task task) {
-        taskService.update(task, task.getId());
+    @PostMapping("/update")
+    public String update(@ModelAttribute Task task, Model model) {
+        var isUpdated = taskService.update(task, task.getId());
+        if (!isUpdated) {
+            model.addAttribute("message", "Вакансия с указанным идентификатором не найдена");
+            return "errors/error404";
+        }
         return "redirect:/taskList";
     }
 
-
    @GetMapping("/formAddPost")
-    public String formAddTask(Model model, HttpSession session) {
+    public String formAddTask(Model model) {
         model.addAttribute("task", new Task(0, "Заполните поле", LocalDateTime.now(), false));
-       Sessions.taskSession(model, session);
-        return "addTask";
+        return "/tasks/addTask";
     }
 
     @PostMapping("/createTask")
@@ -79,18 +52,39 @@ public class TaskController {
         return "redirect:/taskList";
     }
 
-    @PostMapping("/deleteTask{taskId}")
-    public String deleteTask(@PathVariable("taskId") int id) {
-        taskService.delete(id);
-        return "redirect:/taskList";
-    }
-
-    @PostMapping("/doneTask{taskId}")
-    public String doneTask(@PathVariable("taskId") int id) {
-        if (taskService.findById(id).isPresent()) {
-            taskService.findById(id).get().setDone(true);
+    @GetMapping("/deleteTask/{id}")
+    public String delete(Model model, @PathVariable int id) {
+        var isDeleted = taskService.delete(id);
+        if (!isDeleted) {
+            model.addAttribute("message", "Вакансия с указанным идентификатором не найдена");
+            return "errors/error404";
         }
         return "redirect:/taskList";
     }
+
+    @GetMapping("/doneTask{id}")
+    public String doneTask(Model model, @PathVariable int id) {
+        var taskOptional = taskService.findById(id);
+        if (taskOptional.isEmpty()) {
+            model.addAttribute("message", "Задание с указанным идентификатором не найдено");
+            return "errors/error404";
+        }
+        if (!taskOptional.get().isDone()) {
+            taskOptional.get().setDone(true);
+            model.addAttribute("task", taskOptional.get());
+        }
+        return "redirect:/taskList";
+    }
+
+    private  String findById(Model model, @PathVariable int id, String out) {
+        var taskOptional = taskService.findById(id);
+        if (taskOptional.isEmpty()) {
+            model.addAttribute("message", "Задание с указанным идентификатором не найдено");
+            return "errors/error404";
+        }
+        model.addAttribute("task", taskOptional.get());
+        return out;
+    }
+
 
 }

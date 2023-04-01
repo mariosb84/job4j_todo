@@ -20,29 +20,26 @@
 <body>
 <div class="container">
     <div class="row">
-        <table class="table">
-            <thead>
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">Имя</th>
-                <th scope="col">Дата создания </th>
-                <th scope="col">Состояние</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td th:text="${task.id}"></td>
-                <td th:text="${task.description}"></td>
-                <td th:text="${task.created}"></td>
-                <td th:if="${task.done == true}">
-                    ВЫПОЛНЕНО
-                </td>
-                <td th:if="${task.done == false}">
-                    НЕ ВЫПОЛНЕНО
-                </td>
-            </tr>
-            </tbody>
-        </table>
+        <div class="row pt-3">
+            <div class="card" style="width: 100%">
+                <div class="card-header">
+                    Добавление Заявки.
+                </div>
+                <div class="card-body">
+                    <form th:action="@{/tasks/createTask}" method="POST" enctype="multipart/form-data">
+                        <div class="form-group">
+                            <label for="description">Описание</label>
+                            <input type="text" class="form-control" name="description" id="description">
+                        </div>
+                        <div class="form-group">
+                            <label for="done">Состояние</label>
+                            <input type="text" class="form-control" name="done" id="done">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Сохранить</button>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a class="navbar-brand" href="#">Todo List</a>
@@ -53,9 +50,6 @@
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div class="navbar-nav">
                 <a class="nav-item nav-link" th:href="@{/taskList}">Главная</a>
-                <a class="nav-item nav-link" th:href="@{/doneTask/{taskId}(taskId=${task.id})}">Выполнено</a>
-                <a class="nav-item nav-link" th:href="@{/editTask/{taskId}(taskId=${task.id})}">Отредактировать</a>
-                <a class="nav-item nav-link" th:href="@{/deleteTask/{taskId}(taskId=${task.id})}">Удалить</a>
             </div>
         </div>
     </nav>

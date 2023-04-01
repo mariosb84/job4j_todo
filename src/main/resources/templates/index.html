@@ -31,11 +31,11 @@
             </thead>
             <tbody>
             <tr th:each="task: ${tasks}">
-                <td><a th:text="${task.id}" th:href="@{/taskDesc/{taskId}(taskId=${task.id})}"></a></td>
-                <td><a th:text="${task.description}" th:href="@{/taskDesc/{taskId}(taskId=${task.id})}"></a></td>
-                <td><a th:text="${task.created}" th:href="@{/taskDesc/{taskId}(taskId=${task.id})}"></a></td>
-                <td th:if="${task.done == true}"><a th:href="@{/taskDesc/{taskId}(taskId=${task.id})}">ВЫПОЛНЕНО</a></td>
-                <td th:if="${task.done != true}"><a th:href="@{/taskDesc/{taskId}(taskId=${task.id})}">НЕ ВЫПОЛНЕНО</a></td>
+                <td><a th:text="${task.id}" th:href="@{/tasks/taskDesc/{id}(id=${task.id})}"></a></td>
+                <td><a th:text="${task.description}" th:href="@{/tasks/taskDesc/{id}(id=${task.id})}"></a></td>
+                <td><a th:text="${task.created}" th:href="@{/tasks/taskDesc/{id}(id=${task.id})}"></a></td>
+                <td th:if="${task.done == true}"><a th:href="@{/tasks/taskDesc/{id}(id=${task.id})}">ВЫПОЛНЕНО</a></td>
+                <td th:if="${task.done != true}"><a th:href="@{/tasks/taskDesc/{id}(id=${task.id})}">НЕ ВЫПОЛНЕНО</a></td>
             </tr>
             </tbody>
         </table>
@@ -52,10 +52,17 @@
                 <a class="nav-item nav-link" th:href="@{/taskList}">Все</a>
                 <a class="nav-item nav-link" th:href="@{/taskListCompleted}">Выполненные</a>
                 <a class="nav-item nav-link" th:href="@{/taskListNotCompleted}">Новые</a>
-                <a class="nav-item nav-link" th:href="@{/formAddPost}">Добавить задание</a>
             </div>
         </div>
     </nav>
+    <div class="mb-3 row">
+        <div class="col-8">
+            <div class="col-8"></div>
+            <div class="row">
+                <div class="col-4"><a class="btn btn btn-success w-100" th:href="@{/tasks/formAddPost}">Добавить задание</a></div>
+            </div>
+        </div>
+    </div>
 </div>
 </body>
 </html>

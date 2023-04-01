@@ -13,14 +13,14 @@ public interface TaskRepository {
 
     List<Task> findAllNotCompleted();
 
-    Optional<Task> add(Task task);
+    Task add(Task task);
 
-    void update(Task task, int id);
+    boolean update(Task task, int id);
 
     Optional<Task> findById(int id);
 
     List<Task> findByName(String key);
 
-    void delete(int id);
+    boolean delete(int id);
 
 }

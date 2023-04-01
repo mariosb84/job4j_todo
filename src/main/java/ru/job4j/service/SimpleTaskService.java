@@ -35,13 +35,13 @@ public class SimpleTaskService implements TaskService {
     }
 
     @Override
-    public Optional<Task> add(Task task) {
+    public Task add(Task task) {
         return store.add(task);
     }
 
     @Override
-    public void update(Task task, int id) {
-    store.update(task, id);
+    public boolean update(Task task, int id) {
+    return store.update(task, id);
     }
 
     @Override
@@ -55,8 +55,8 @@ public class SimpleTaskService implements TaskService {
     }
 
     @Override
-    public void delete(int id) {
-    store.delete(id);
+    public boolean delete(int id) {
+    return store.delete(id);
     }
 
 }
