@@ -13,7 +13,7 @@ import java.util.Optional;
 
 @Repository
 @AllArgsConstructor
-public class TaskRepositoryHbt implements TaskRepository {
+public class HibernateTaskRepository implements TaskRepository {
 
     private final SessionFactory sf;
 
@@ -36,33 +36,14 @@ public class TaskRepositoryHbt implements TaskRepository {
     }
 
     @Override
-    public List<Task> findAllCompleted() {
+    public List<Task> findAllByCondition(boolean done) {
         List<Task> result = new ArrayList<>();
         Session session = sf.openSession();
         try {
             session.beginTransaction();
             Query query = session.createQuery(
                     "from Task as t where t.done =: fDone order by id", Task.class);
-            query.setParameter("fDone", true);
-            result = (query.list());
-            session.getTransaction().commit();
-        } catch (Exception e) {
-            session.getTransaction().rollback();
-        } finally {
-            session.close();
-        }
-        return result;
-    }
-
-    @Override
-    public List<Task> findAllNotCompleted() {
-        List<Task> result = new ArrayList<>();
-        Session session = sf.openSession();
-        try {
-            session.beginTransaction();
-            Query query = session.createQuery(
-                    "from Task as t where t.done =: fDone order by id", Task.class);
-            query.setParameter("fDone", false);
+            query.setParameter("fDone", done);
             result = (query.list());
             session.getTransaction().commit();
         } catch (Exception e) {
@@ -89,25 +70,23 @@ public class TaskRepositoryHbt implements TaskRepository {
     }
 
     @Override
-    public boolean update(Task task, int id) {
-        boolean result = false;
+    public void update(Task task, int id) {
         Session session = sf.openSession();
         try {
             session.beginTransaction();
-            result = session.createQuery(
+            session.createQuery(
                     "UPDATE Task SET description = :fDesc, created = : fCreated, done =: fDone WHERE id = :fId")
                     .setParameter("fDesc", task.getDescription())
                     .setParameter("fCreated", task.getCreated())
                     .setParameter("fDone", task.isDone())
                     .setParameter("fId", id)
-                    .executeUpdate() > 0;
+                    .executeUpdate();
             session.getTransaction().commit();
         } catch (Exception e) {
             session.getTransaction().rollback();
         } finally {
             session.close();
         }
-        return result;
     }
 
     @Override
@@ -165,6 +144,24 @@ public class TaskRepositoryHbt implements TaskRepository {
             session.close();
         }
         return result;
+    }
+
+    @Override
+    public void setDone(int id) {
+        Session session = sf.openSession();
+        try {
+            session.beginTransaction();
+            session.createQuery(
+                    "UPDATE Task SET done =: fDone WHERE id = :fId")
+                    .setParameter("fDone", true)
+                    .setParameter("fId", id)
+                    .executeUpdate();
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            session.getTransaction().rollback();
+        } finally {
+            session.close();
+        }
     }
 
 }

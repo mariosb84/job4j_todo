@@ -9,18 +9,18 @@ public interface TaskRepository {
 
     List<Task> findAll();
 
-    List<Task> findAllCompleted();
-
-    List<Task> findAllNotCompleted();
+    List<Task> findAllByCondition(boolean done);
 
     Task add(Task task);
 
-    boolean update(Task task, int id);
+    void update(Task task, int id);
 
     Optional<Task> findById(int id);
 
     List<Task> findByName(String key);
 
     boolean delete(int id);
+
+    void setDone(int id);
 
 }

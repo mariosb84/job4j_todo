@@ -25,13 +25,8 @@ public class SimpleTaskService implements TaskService {
     }
 
     @Override
-    public List<Task> findAllCompleted() {
-        return store.findAllCompleted();
-    }
-
-    @Override
-    public List<Task> findAllNotCompleted() {
-        return store.findAllNotCompleted();
+    public List<Task> findAllByCondition(boolean done) {
+        return store.findAllByCondition(done);
     }
 
     @Override
@@ -40,8 +35,8 @@ public class SimpleTaskService implements TaskService {
     }
 
     @Override
-    public boolean update(Task task, int id) {
-    return store.update(task, id);
+    public void update(Task task, int id) {
+     store.update(task, id);
     }
 
     @Override
@@ -57,6 +52,11 @@ public class SimpleTaskService implements TaskService {
     @Override
     public boolean delete(int id) {
     return store.delete(id);
+    }
+
+    @Override
+    public void setDone(int id) {
+        store.setDone(id);
     }
 
 }

@@ -1,31 +1,30 @@
 package ru.job4j.model;
 
-import lombok.Data;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "tasks")
-@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Task {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Setter
+    @Getter
     private int id;
+    @NonNull
+    @Setter
+    @Getter
     private  String description;
+    @NonNull
+    @Setter
+    @Getter
     private LocalDateTime created = LocalDateTime.now();
+    @Setter
+    @Getter
     private  boolean done;
-
-    public Task() {
-
-    }
-
-    public Task(int id, String description, LocalDateTime created, boolean done) {
-        this.id = id;
-        this.description = description;
-        this.created = created;
-        this.done = done;
-    }
 
 }
