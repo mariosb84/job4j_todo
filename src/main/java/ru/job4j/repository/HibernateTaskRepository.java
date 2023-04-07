@@ -74,13 +74,6 @@ public class HibernateTaskRepository implements TaskRepository {
         Session session = sf.openSession();
         try {
             session.beginTransaction();
-            /*session.createQuery(
-                    "UPDATE Task SET description = :fDesc, created = : fCreated, done =: fDone WHERE id = :fId")
-                    .setParameter("fDesc", task.getDescription())
-                    .setParameter("fCreated", task.getCreated())
-                    .setParameter("fDone", task.isDone())
-                    .setParameter("fId", id)
-                    .executeUpdate();*/
             session.update(task);
             session.getTransaction().commit();
         } catch (Exception e) {
