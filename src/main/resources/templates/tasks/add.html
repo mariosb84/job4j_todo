@@ -26,14 +26,10 @@
                     Добавление Заявки.
                 </div>
                 <div class="card-body">
-                    <form th:action="@{/tasks/create}" method="POST" enctype="multipart/form-data">
+                    <form th:action="@{/tasks/create}" method="POST">
                         <div class="form-group">
                             <label for="description">Описание</label>
                             <input type="text" class="form-control" name="description" id="description">
-                        </div>
-                        <div class="form-group">
-                            <label for="done">Состояние</label>
-                            <input type="text" class="form-control" name="done" id="done">
                         </div>
                         <button type="submit" class="btn btn-primary">Сохранить</button>
                     </form>
