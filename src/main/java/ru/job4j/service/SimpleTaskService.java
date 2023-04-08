@@ -36,7 +36,7 @@ public class SimpleTaskService implements TaskService {
 
     @Override
     public void update(Task task, int id) {
-     store.update(task, id);
+      store.update(task, id);
     }
 
     @Override
@@ -55,8 +55,8 @@ public class SimpleTaskService implements TaskService {
     }
 
     @Override
-    public void setDone(int id) {
-        store.setDone(id);
+    public boolean setDone(int id) {
+        return store.setDone(id);
     }
 
 }

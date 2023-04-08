@@ -21,6 +21,6 @@ public interface TaskRepository {
 
     boolean delete(int id);
 
-    void setDone(int id);
+    boolean setDone(int id);
 
 }

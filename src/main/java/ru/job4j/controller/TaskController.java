@@ -31,9 +31,14 @@ public class TaskController {
     }
 
     @PostMapping("/update")
-    public String update(@ModelAttribute Task task) {
+    public String update(Model model, @ModelAttribute Task task) {
+        var taskOptional = taskService.findById(task.getId());
        taskService.update(task, task.getId());
-        return "redirect:/list";
+        if (taskOptional.isEmpty()) {
+            model.addAttribute("message", "Задание с указанным идентификатором не найдено");
+            return "errors/error404";
+        }
+        return "redirect:/tasks/list";
     }
 
    @GetMapping("/formAdd")
@@ -45,23 +50,27 @@ public class TaskController {
     @PostMapping("/create")
     public String create(@ModelAttribute Task task) {
         taskService.add(task);
-        return "redirect:/list";
+        return "redirect:/tasks/list";
     }
 
     @GetMapping("/delete/{id}")
     public String delete(Model model, @PathVariable int id) {
         var isDeleted = taskService.delete(id);
         if (!isDeleted) {
-            model.addAttribute("message", "Вакансия с указанным идентификатором не найдена");
+            model.addAttribute("message", "Задание с указанным идентификатором не найдено");
             return "errors/error404";
         }
-        return "redirect:/list";
+        return "redirect:/tasks/list";
     }
 
-    @GetMapping("/done{id}")
-    public String done(@PathVariable int id) {
-       taskService.setDone(id);
-        return "redirect:/list";
+    @GetMapping("/done/{id}")
+    public String done(Model model, @PathVariable int id) {
+      var isDone = taskService.setDone(id);
+        if (!isDone) {
+            model.addAttribute("message", "Задание с указанным идентификатором не найдено");
+            return "errors/error404";
+        }
+        return "redirect:/tasks/list";
     }
 
     private  String findById(Model model, @PathVariable int id, String out) {
