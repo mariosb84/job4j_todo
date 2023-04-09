@@ -76,8 +76,8 @@ public class HibernateTaskRepository implements TaskRepository {
         try {
             session.beginTransaction();
             session.update(task);
-            result = session.contains(task);
             session.getTransaction().commit();
+            result = true;
         } catch (Exception e) {
             session.getTransaction().rollback();
         } finally {
