@@ -32,9 +32,8 @@ public class TaskController {
 
     @PostMapping("/update")
     public String update(Model model, @ModelAttribute Task task) {
-        var taskOptional = taskService.findById(task.getId());
-       taskService.update(task, task.getId());
-        if (taskOptional.isEmpty()) {
+      var isUpdate = taskService.update(task, task.getId());
+        if (!isUpdate) {
             model.addAttribute("message", "Задание с указанным идентификатором не найдено");
             return "errors/error404";
         }

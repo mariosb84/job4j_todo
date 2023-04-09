@@ -70,17 +70,20 @@ public class HibernateTaskRepository implements TaskRepository {
     }
 
     @Override
-    public void update(Task task, int id) {
+    public boolean update(Task task, int id) {
+        boolean result = false;
         Session session = sf.openSession();
         try {
             session.beginTransaction();
             session.update(task);
+            result = session.contains(task);
             session.getTransaction().commit();
         } catch (Exception e) {
             session.getTransaction().rollback();
         } finally {
             session.close();
         }
+        return result;
     }
 
     @Override
