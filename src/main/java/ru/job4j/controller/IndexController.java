@@ -6,6 +6,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ru.job4j.service.TaskService;
+import ru.job4j.utilites.Sessions;
+
+import javax.servlet.http.HttpSession;
 
 @ThreadSafe
 @Controller
@@ -19,20 +22,23 @@ public class IndexController {
     }
 
     @GetMapping("/list")
-    public String index(Model model) {
+    public String index(Model model, HttpSession session) {
         model.addAttribute("tasks", taskService.findAll());
+        Sessions.userSession(model, session);
         return "/tasks/list";
     }
 
     @GetMapping("/listCompleted")
-    public String indexCompleted(Model model) {
+    public String indexCompleted(Model model, HttpSession session) {
         model.addAttribute("tasks", taskService.findAllByCondition(true));
+        Sessions.userSession(model, session);
         return "/tasks/list";
     }
 
     @GetMapping("/listNotCompleted")
-    public String indexNotCompleted(Model model) {
+    public String indexNotCompleted(Model model, HttpSession session) {
         model.addAttribute("tasks", taskService.findAllByCondition(false));
+        Sessions.userSession(model, session);
         return "/tasks/list";
     }
 

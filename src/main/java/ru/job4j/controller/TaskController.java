@@ -6,7 +6,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.job4j.model.Task;
 import ru.job4j.service.TaskService;
+import ru.job4j.utilites.Sessions;
 
+import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
 
 @ThreadSafe
@@ -21,13 +23,13 @@ public class TaskController {
     }
 
     @GetMapping("/desc/{id}")
-    public String getById(Model model, @PathVariable int id) {
-      return findById(model, id, "/tasks/desc");
+    public String getById(Model model, @PathVariable int id, HttpSession session) {
+      return findById(model, id, "/tasks/desc", session);
     }
 
     @GetMapping("/formUpdate/{id}")
-    public String formUpdate(Model model, @PathVariable int id) {
-        return findById(model, id, "/tasks/edit");
+    public String formUpdate(Model model, @PathVariable int id, HttpSession session) {
+        return findById(model, id, "/tasks/edit", session);
     }
 
     @PostMapping("/update")
@@ -41,8 +43,9 @@ public class TaskController {
     }
 
    @GetMapping("/formAdd")
-    public String formAdd(Model model) {
+    public String formAdd(Model model, HttpSession session) {
         model.addAttribute("task", new Task(0, "Заполните поле", LocalDateTime.now(), false));
+       Sessions.userSession(model, session);
         return "/tasks/add";
     }
 
@@ -53,32 +56,35 @@ public class TaskController {
     }
 
     @GetMapping("/delete/{id}")
-    public String delete(Model model, @PathVariable int id) {
+    public String delete(Model model, @PathVariable int id, HttpSession session) {
         var isDeleted = taskService.delete(id);
         if (!isDeleted) {
             model.addAttribute("message", "Задание с указанным идентификатором не найдено");
             return "errors/error404";
         }
+        Sessions.userSession(model, session);
         return "redirect:/tasks/list";
     }
 
     @GetMapping("/done/{id}")
-    public String done(Model model, @PathVariable int id) {
+    public String done(Model model, @PathVariable int id, HttpSession session) {
       var isDone = taskService.setDone(id);
         if (!isDone) {
             model.addAttribute("message", "Задание с указанным идентификатором не найдено");
             return "errors/error404";
         }
+        Sessions.userSession(model, session);
         return "redirect:/tasks/list";
     }
 
-    private  String findById(Model model, @PathVariable int id, String out) {
+    private  String findById(Model model, @PathVariable int id, String out, HttpSession session) {
         var taskOptional = taskService.findById(id);
         if (taskOptional.isEmpty()) {
             model.addAttribute("message", "Задание с указанным идентификатором не найдено");
             return "errors/error404";
         }
         model.addAttribute("task", taskOptional.get());
+        Sessions.userSession(model, session);
         return out;
     }
 
