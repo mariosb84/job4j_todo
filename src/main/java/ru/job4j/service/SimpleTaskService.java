@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import net.jcip.annotations.ThreadSafe;
 import org.springframework.stereotype.Service;
 import ru.job4j.model.Task;
+import ru.job4j.model.User;
 import ru.job4j.repository.TaskRepository;
 
 import java.util.List;
@@ -57,6 +58,11 @@ public class SimpleTaskService implements TaskService {
     @Override
     public boolean setDone(int id) {
         return store.setDone(id);
+    }
+
+    @Override
+    public boolean setUser(User user) {
+        return store.setUser(user);
     }
 
 }

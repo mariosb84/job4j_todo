@@ -3,6 +3,7 @@ package ru.job4j.repository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 import ru.job4j.model.Task;
+import ru.job4j.model.User;
 
 import java.util.List;
 import java.util.Map;
@@ -69,6 +70,15 @@ public class HibernateTaskRepository implements TaskRepository {
         crudRepository.run(
                 "UPDATE Task SET done =: fDone WHERE id = :fId",
                 Map.of("fId", id, "fDone", true)
+        );
+        return true;
+    }
+
+    @Override
+    public boolean setUser(User user) {
+        crudRepository.run(
+                "UPDATE Task SET user =: fUser",
+                Map.of("fUser", user)
         );
         return true;
     }

@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.job4j.model.Task;
+import ru.job4j.model.User;
 import ru.job4j.service.TaskService;
 import ru.job4j.utilites.Sessions;
 
@@ -44,7 +45,7 @@ public class TaskController {
 
    @GetMapping("/formAdd")
     public String formAdd(Model model, HttpSession session) {
-        model.addAttribute("task", new Task(0, "Заполните поле", LocalDateTime.now(), false));
+        model.addAttribute("task", new Task(0, "Заполните поле", LocalDateTime.now(), false, new User()));
        Sessions.userSession(model, session);
         return "/tasks/add";
     }
