@@ -1,6 +1,7 @@
 package ru.job4j.service;
 
 import ru.job4j.model.Task;
+import ru.job4j.model.User;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,4 +23,6 @@ public interface TaskService {
     boolean delete(int id);
 
     boolean setDone(int id);
+
+    boolean setUser(User user);
 }

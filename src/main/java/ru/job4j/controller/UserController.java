@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.job4j.model.User;
+import ru.job4j.service.TaskService;
 import ru.job4j.service.UserService;
 import ru.job4j.utilites.Sessions;
 
@@ -19,8 +20,11 @@ public class UserController {
 
     private final UserService userService;
 
-    public UserController(UserService userService) {
+    private final TaskService taskService;
+
+    public UserController(UserService userService, TaskService taskService) {
         this.userService = userService;
+        this.taskService = taskService;
     }
 
 
@@ -61,6 +65,7 @@ public class UserController {
         }
         HttpSession session = req.getSession();
         session.setAttribute("user", userDb.get());
+        taskService.setUser(userDb.get());
         return "redirect:/tasks/list";
     }
 

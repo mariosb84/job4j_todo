@@ -5,6 +5,8 @@ import lombok.*;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+@Data
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
 @Table(name = "tasks")
 @AllArgsConstructor
@@ -14,6 +16,7 @@ public class Task {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Setter
     @Getter
+    @EqualsAndHashCode.Include
     private int id;
     @NonNull
     @Setter
@@ -26,5 +29,11 @@ public class Task {
     @Setter
     @Getter
     private  boolean done;
+    @ManyToOne
+    @JoinColumn(name = "user_id ")
+    @NonNull
+    @Setter
+    @Getter
+    private User user;
 
 }

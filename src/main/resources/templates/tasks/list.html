@@ -27,6 +27,7 @@
                 <th scope="col">Имя</th>
                 <th scope="col">Дата создания </th>
                 <th scope="col">Состояние</th>
+                <th scope="col">Пользователь</th>
             </tr>
             </thead>
             <tbody>
@@ -36,6 +37,7 @@
                 <td><a th:text="${task.created}" th:href="@{/tasks/desc/{id}(id=${task.id})}"></a></td>
                 <td th:if="${task.done == true}"><a th:href="@{/tasks/desc/{id}(id=${task.id})}">ВЫПОЛНЕНО</a></td>
                 <td th:if="${task.done != true}"><a th:href="@{/tasks/desc/{id}(id=${task.id})}">НЕ ВЫПОЛНЕНО</a></td>
+                <td><a th:text="${task.user.name}" th:href="@{/tasks/desc/{id}(id=${task.id})}"></a></td>
             </tr>
             </tbody>
         </table>
