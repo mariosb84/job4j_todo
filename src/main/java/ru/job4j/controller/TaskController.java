@@ -4,6 +4,7 @@ import net.jcip.annotations.ThreadSafe;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import ru.job4j.model.Priority;
 import ru.job4j.model.Task;
 import ru.job4j.model.User;
 import ru.job4j.service.TaskService;
@@ -45,7 +46,7 @@ public class TaskController {
 
    @GetMapping("/formAdd")
     public String formAdd(Model model, HttpSession session) {
-        model.addAttribute("task", new Task(0, "Заполните поле", LocalDateTime.now(), false, new User()));
+        model.addAttribute("task", new Task(0, "Заполните поле", LocalDateTime.now(), false, new User(), new Priority()));
        Sessions.userSession(model, session);
         return "/tasks/add";
     }
