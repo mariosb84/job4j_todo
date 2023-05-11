@@ -1,11 +1,9 @@
 package ru.job4j.controller;
 
 import net.jcip.annotations.ThreadSafe;
-import org.checkerframework.checker.units.qual.C;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import ru.job4j.model.Category;
 import ru.job4j.model.Priority;
 import ru.job4j.model.Task;
 import ru.job4j.model.User;
@@ -17,8 +15,6 @@ import ru.job4j.utilites.Sessions;
 import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @ThreadSafe
 @Controller

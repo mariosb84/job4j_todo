@@ -2,7 +2,6 @@ package ru.job4j.repository;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
-import ru.job4j.model.Category;
 import ru.job4j.model.Task;
 import ru.job4j.model.User;
 
