@@ -2,6 +2,7 @@ package ru.job4j.repository;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
+import ru.job4j.model.Category;
 import ru.job4j.model.Task;
 import ru.job4j.model.User;
 
@@ -17,13 +18,17 @@ public class HibernateTaskRepository implements TaskRepository {
 
     @Override
     public List<Task> findAll() {
-        return crudRepository.query("from  Task t join fetch t.priority  order by t.id asc", Task.class);
+        return crudRepository.query("from  Task t join fetch t.priority "
+                + "join fetch t.participates "
+                + "order by t.id asc", Task.class);
     }
 
     @Override
     public List<Task> findAllByCondition(boolean done) {
         return crudRepository.query(
-                "from Task t join fetch t.priority where done =: fDone order by t.id asc", Task.class,
+                "from Task t join fetch t.priority "
+                        + "join fetch t.participates "
+                        + "where done =: fDone order by t.id asc", Task.class,
                 Map.of("fDone", done)
         );
     }

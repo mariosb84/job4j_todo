@@ -29,53 +29,59 @@
                 <th scope="col">Состояние</th>
                 <th scope="col">Пользователь</th>
                 <th scope="col">Приоритет</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="task: ${tasks}">
-                <td><a th:text="${task.id}" th:href="@{/tasks/desc/{id}(id=${task.id})}"></a></td>
-                <td><a th:text="${task.description}" th:href="@{/tasks/desc/{id}(id=${task.id})}"></a></td>
-                <td><a th:text="${task.created}" th:href="@{/tasks/desc/{id}(id=${task.id})}"></a></td>
-                <td th:if="${task.done == true}"><a th:href="@{/tasks/desc/{id}(id=${task.id})}">ВЫПОЛНЕНО</a></td>
-                <td th:if="${task.done != true}"><a th:href="@{/tasks/desc/{id}(id=${task.id})}">НЕ ВЫПОЛНЕНО</a></td>
-                <td><a th:text="${task.user.name}" th:href="@{/tasks/desc/{id}(id=${task.id})}"></a></td>
-                <td><a th:text="${task.priority.name}" th:href="@{/tasks/desc/{id}(id=${task.id})}"></a></td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="#">Todo List</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
-                aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-            <div class="navbar-nav">
-                <a class="nav-item nav-link active" href="#">Главная <span class="sr-only">(current)</span></a>
-                <a class="nav-item nav-link" th:href="@{/tasks/list}">Все</a>
-                <a class="nav-item nav-link" th:href="@{/tasks/listCompleted}">Выполненные</a>
-                <a class="nav-item nav-link" th:href="@{/tasks/listNotCompleted}">Новые</a>
-                <a class="nav-item nav-link" th:href="@{/users/formAddUser}">Регистрация</a>
-                <a class="nav-item nav-link" th:if="${user.name == 'Гость'}" th:href="@{/users/loginPage}">
-                    <span th:text="${user.name}"></span>
-                    <span> | Войти</span>
-                </a>
-                <a class="nav-item nav-link" th:if="${user.name != 'Гость'}" th:href="@{/users/logout}">
-                    <span th:text="${user.name}"></span>
-                    <span> | Выйти</span>
-                </a>
-            </div>
-        </div>
-    </nav>
-    <div class="mb-3 row">
-        <div class="col-8">
-            <div class="col-8"></div>
-            <div class="row">
-                <div class="col-4"><a class="btn btn btn-success w-100" th:href="@{/tasks/formAdd}">Добавить задание</a></div>
-            </div>
-        </div>
-    </div>
-</div>
-</body>
-</html>
+                <th scope="col">Категория</th>
+             </tr>
+             </thead>
+             <tbody>
+             <tr th:each="task: ${tasks}">
+                 <td><a th:text="${task.id}" th:href="@{/tasks/desc/{id}(id=${task.id})}"></a></td>
+                 <td><a th:text="${task.description}" th:href="@{/tasks/desc/{id}(id=${task.id})}"></a></td>
+                 <td><a th:text="${task.created}" th:href="@{/tasks/desc/{id}(id=${task.id})}"></a></td>
+                 <td th:if="${task.done == true}"><a th:href="@{/tasks/desc/{id}(id=${task.id})}">ВЫПОЛНЕНО</a></td>
+                 <td th:if="${task.done != true}"><a th:href="@{/tasks/desc/{id}(id=${task.id})}">НЕ ВЫПОЛНЕНО</a></td>
+                 <td><a th:text="${task.user.name}" th:href="@{/tasks/desc/{id}(id=${task.id})}"></a></td>
+                 <td><a th:text="${task.priority.name}" th:href="@{/tasks/desc/{id}(id=${task.id})}"></a></td>
+                 <td>
+                     <table class="table"><tbody>
+                      <tr th:each="category: ${task.participates}"><td><a th:text="${category.name}" th:href="@{/tasks/desc/{id}(id=${task.id})}"></a></td></tr>
+                      </tbody></table>
+                  </td>
+               </tr>
+               </tbody>
+           </table>
+       </div>
+       <nav class="navbar navbar-expand-lg navbar-light bg-light">
+           <a class="navbar-brand" href="#">Todo List</a>
+           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+                   aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+               <span class="navbar-toggler-icon"></span>
+           </button>
+           <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+               <div class="navbar-nav">
+                   <a class="nav-item nav-link active" href="#">Главная <span class="sr-only">(current)</span></a>
+                   <a class="nav-item nav-link" th:href="@{/tasks/list}">Все</a>
+                   <a class="nav-item nav-link" th:href="@{/tasks/listCompleted}">Выполненные</a>
+                   <a class="nav-item nav-link" th:href="@{/tasks/listNotCompleted}">Новые</a>
+                   <a class="nav-item nav-link" th:href="@{/users/formAddUser}">Регистрация</a>
+                   <a class="nav-item nav-link" th:if="${user.name == 'Гость'}" th:href="@{/users/loginPage}">
+                       <span th:text="${user.name}"></span>
+                       <span> | Войти</span>
+                   </a>
+                   <a class="nav-item nav-link" th:if="${user.name != 'Гость'}" th:href="@{/users/logout}">
+                       <span th:text="${user.name}"></span>
+                       <span> | Выйти</span>
+                   </a>
+               </div>
+           </div>
+       </nav>
+       <div class="mb-3 row">
+           <div class="col-8">
+               <div class="col-8"></div>
+               <div class="row">
+                   <div class="col-4"><a class="btn btn btn-success w-100" th:href="@{/tasks/formAdd}">Добавить задание</a></div>
+               </div>
+           </div>
+       </div>
+   </div>
+   </body>
+   </html>

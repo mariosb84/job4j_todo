@@ -1,17 +1,24 @@
 package ru.job4j.controller;
 
 import net.jcip.annotations.ThreadSafe;
+import org.checkerframework.checker.units.qual.C;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import ru.job4j.model.Category;
 import ru.job4j.model.Priority;
 import ru.job4j.model.Task;
 import ru.job4j.model.User;
+import ru.job4j.service.CategoryService;
+import ru.job4j.service.PriorityService;
 import ru.job4j.service.TaskService;
 import ru.job4j.utilites.Sessions;
 
 import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @ThreadSafe
 @Controller
@@ -19,9 +26,14 @@ import java.time.LocalDateTime;
 public class TaskController {
 
     private final TaskService taskService;
-
-    public TaskController(TaskService taskService) {
+    private final CategoryService categoryService;
+    private final PriorityService priorityService;
+    public TaskController(TaskService taskService,
+                          CategoryService categoryService,
+                          PriorityService priorityService) {
         this.taskService = taskService;
+        this.categoryService = categoryService;
+        this.priorityService = priorityService;
     }
 
     @GetMapping("/desc/{id}")
@@ -46,13 +58,19 @@ public class TaskController {
 
    @GetMapping("/formAdd")
     public String formAdd(Model model, HttpSession session) {
-        model.addAttribute("task", new Task(0, "Заполните поле", LocalDateTime.now(), false, new User(), new Priority()));
-       Sessions.userSession(model, session);
+        model.addAttribute("task", new Task(0, "Заполните поле", LocalDateTime.now(),
+                false, new User(), new Priority(), new ArrayList<>()));
+        model.addAttribute("priorities", priorityService.findAll());
+        model.addAttribute("categories", categoryService.findAll());
+        Sessions.userSession(model, session);
         return "/tasks/add";
     }
 
     @PostMapping("/create")
     public String create(@ModelAttribute Task task) {
+        task.setPriority(priorityService.findById(task.getPriority().getId()).get());
+        task.setParticipates(categoryService.findCategoryByIdList(
+                categoryService.findIdByCategoryList(task.getParticipates())));
         taskService.add(task);
         return "redirect:/tasks/list";
     }
@@ -89,6 +107,5 @@ public class TaskController {
         Sessions.userSession(model, session);
         return out;
     }
-
 
 }

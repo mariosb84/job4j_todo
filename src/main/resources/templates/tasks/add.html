@@ -31,32 +31,49 @@
                             <label for="description">Описание</label>
                             <input type="text" class="form-control" name="description" id="description">
                         </div>
-                        <button type="submit" class="btn btn-primary">Сохранить</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="#">Todo List</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
-                aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-            <div class="navbar-nav">
-                <a class="nav-item nav-link" th:href="@{/tasks/list}">Главная</a>
-                <a class="nav-item nav-link" th:if="${user.name == 'Гость'}" th:href="@{/users/loginPage}">
-                    <span th:text="${user.name}"></span>
-                    <span> | Войти</span>
-                </a>
-                <a class="nav-item nav-link" th:if="${user.name != 'Гость'}" th:href="@{/users/logout}">
-                    <span th:text="${user.name}"></span>
-                    <span> | Выйти</span>
-                </a>
-            </div>
-        </div>
-    </nav>
-</div>
-</body>
-</html>
+                        <div class="form-group">
+                            <label for="priority.id">Приоритет</label>
+                            <select class="form-control" id="priority.id" name="priority.id">
+                                <option th:each="priority : ${priorities}" th:value="${priority.id}" th:text="${priority.name}"></option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="multiSelectElementsSelected">Категория</label>
+                            <select id="multiSelectElementsSelected"
+                                    name="multiSelectElementsSelected"
+                                    multiple="multiple"
+                                    th:field="*{task.participates}">
+                                <option th:each="category,row : ${categories}"
+                                        th:value="${category.id}"
+                                        th:text="${category.name}"></option>
+                            </select>
+                          </div>
+                          <button type="submit" class="btn btn-primary">Сохранить</button>
+                      </form>
+                  </div>
+              </div>
+          </div>
+      </div>
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+          <a class="navbar-brand" href="#">Todo List</a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+                  aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+              <div class="navbar-nav">
+                  <a class="nav-item nav-link" th:href="@{/tasks/list}">Главная</a>
+                  <a class="nav-item nav-link" th:if="${user.name == 'Гость'}" th:href="@{/users/loginPage}">
+                      <span th:text="${user.name}"></span>
+                      <span> | Войти</span>
+                  </a>
+                  <a class="nav-item nav-link" th:if="${user.name != 'Гость'}" th:href="@{/users/logout}">
+                      <span th:text="${user.name}"></span>
+                      <span> | Выйти</span>
+                  </a>
+              </div>
+          </div>
+      </nav>
+   </div>
+   </body>
+   </html>
