@@ -65,9 +65,7 @@ public class TaskController {
     @PostMapping("/create")
     public String create(@ModelAttribute Task task) {
         task.setPriority(priorityService.findById(task.getPriority().getId()).get());
-        task.setParticipates(categoryService.findCategoryByIdList(
-                categoryService.findIdByCategoryList(task.getParticipates())));
-        taskService.add(task);
+        task.setCategories(task.getCategories());
         return "redirect:/tasks/list";
     }
 

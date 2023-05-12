@@ -42,7 +42,7 @@
                             <select id="multiSelectElementsSelected"
                                     name="multiSelectElementsSelected"
                                     multiple="multiple"
-                                    th:field="*{task.participates}">
+                                    th:field="*{task.categories}">
                                 <option th:each="category,row : ${categories}"
                                         th:value="${category.id}"
                                         th:text="${category.name}"></option>

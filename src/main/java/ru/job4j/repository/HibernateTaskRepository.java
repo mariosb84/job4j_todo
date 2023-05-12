@@ -18,7 +18,7 @@ public class HibernateTaskRepository implements TaskRepository {
     @Override
     public List<Task> findAll() {
         return crudRepository.query("from  Task t join fetch t.priority "
-                + "join fetch t.participates "
+                + "join fetch t.categories "
                 + "order by t.id asc", Task.class);
     }
 
@@ -26,7 +26,7 @@ public class HibernateTaskRepository implements TaskRepository {
     public List<Task> findAllByCondition(boolean done) {
         return crudRepository.query(
                 "from Task t join fetch t.priority "
-                        + "join fetch t.participates "
+                        + "join fetch t.categories "
                         + "where done =: fDone order by t.id asc", Task.class,
                 Map.of("fDone", done)
         );

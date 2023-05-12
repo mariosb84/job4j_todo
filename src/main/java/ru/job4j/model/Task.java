@@ -51,5 +51,5 @@ public class Task {
             joinColumns = { @JoinColumn(name = "task_id") },
             inverseJoinColumns = { @JoinColumn(name = "category_id") }
     )
-    private List<Category> participates = new ArrayList<>();
+    private List<Category> categories = new ArrayList<>();
 }
