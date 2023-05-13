@@ -26,23 +26,21 @@ public class IndexController {
     public String index(Model model, HttpSession session) {
         User userDb = (User) session.getAttribute("user");
         taskService.setUser(userDb);
-        model.addAttribute("tasks", taskService.findAll().stream().distinct().toList());
+        model.addAttribute("tasks", taskService.findAll());
         Sessions.userSession(model, session);
         return "/tasks/list";
     }
 
     @GetMapping("/listCompleted")
     public String indexCompleted(Model model, HttpSession session) {
-        model.addAttribute("tasks", taskService.findAllByCondition(true).
-                stream().distinct().toList());
+        model.addAttribute("tasks", taskService.findAllByCondition(true));
         Sessions.userSession(model, session);
         return "/tasks/list";
     }
 
     @GetMapping("/listNotCompleted")
     public String indexNotCompleted(Model model, HttpSession session) {
-        model.addAttribute("tasks", taskService.findAllByCondition(false).
-                stream().distinct().toList());
+        model.addAttribute("tasks", taskService.findAllByCondition(false));
         Sessions.userSession(model, session);
         return "/tasks/list";
     }
