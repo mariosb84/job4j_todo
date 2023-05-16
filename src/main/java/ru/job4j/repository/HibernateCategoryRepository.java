@@ -52,11 +52,10 @@ public class HibernateCategoryRepository implements CategoryRepository {
     }
     @Override
     public List<Category> findCategoryByIdList(List<Integer> list) {
-        List<Category> result = new ArrayList<>();
-        for (int a : list) {
-            result.add(findById(a).get());
-        }
-        return result;
+        return crudRepository.query(
+                "from Category c where c.id IN :listName", Category.class,
+                Map.of("listName", list)
+        );
     }
 
     @Override

@@ -4,6 +4,7 @@ import net.jcip.annotations.ThreadSafe;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import ru.job4j.model.Category;
 import ru.job4j.model.Priority;
 import ru.job4j.model.Task;
 import ru.job4j.model.User;
@@ -12,9 +13,12 @@ import ru.job4j.service.PriorityService;
 import ru.job4j.service.TaskService;
 import ru.job4j.utilites.Sessions;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 @ThreadSafe
 @Controller
@@ -63,9 +67,14 @@ public class TaskController {
     }
 
     @PostMapping("/create")
-    public String create(@ModelAttribute Task task) {
+    public String create(@ModelAttribute Task task, HttpServletRequest req) {
+        HttpSession session = req.getSession();
+        String[] arrayString = (String[]) session.getAttribute("task.categories");
+        List<Integer> integerList = new ArrayList<>();
+        Arrays.stream(arrayString).mapToInt(Integer::parseInt).forEach(integerList::add);
         task.setPriority(priorityService.findById(task.getPriority().getId()).get());
-        task.setCategories(task.getCategories());
+        task.setCategories(categoryService.findCategoryByIdList(integerList));
+        taskService.add(task);
         return "redirect:/tasks/list";
     }
 
