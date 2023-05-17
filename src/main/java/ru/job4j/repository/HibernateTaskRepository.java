@@ -47,7 +47,9 @@ public class HibernateTaskRepository implements TaskRepository {
     @Override
     public Optional<Task> findById(int id) {
         return crudRepository.optional(
-                "from Task where id = :fId", Task.class,
+                "select distinct t from Task t join fetch t.priority "
+                        + "join fetch t.categories "
+                        + "where t.id = :fId", Task.class,
                 Map.of("fId", id)
         );
     }
@@ -55,7 +57,9 @@ public class HibernateTaskRepository implements TaskRepository {
     @Override
     public List<Task> findByName(String key) {
         return crudRepository.query(
-                "from Task where description = :fName", Task.class,
+                "from Task t join fetch t.priority "
+                        + "join fetch t.categories "
+                        + "where t.name = :fName", Task.class,
                 Map.of("fName", key)
         );
     }

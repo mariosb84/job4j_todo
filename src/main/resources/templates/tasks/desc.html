@@ -45,7 +45,11 @@
                 </td>
                 <td><a th:text="${task.user.name}" th:href="@{/tasks/desc/{id}(id=${task.id})}"></a></td>
                 <td><a th:text="${task.priority.name}" th:href="@{/tasks/desc/{id}(id=${task.id})}"></a></td>
-                <td><a th:text="${task.category.name}" th:href="@{/tasks/desc/{id}(id=${task.id})}"></a></td>
+                <td>
+                    <table class="table"><tbody>
+                    <tr th:each="category: ${task.categories}"><td><a th:text="${category.name}" th:href="@{/tasks/desc/{id}(id=${task.id})}"></a></td></tr>
+                    </tbody></table>
+                </td>
             </tr>
             </tbody>
         </table>

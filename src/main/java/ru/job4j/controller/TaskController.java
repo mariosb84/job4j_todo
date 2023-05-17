@@ -43,11 +43,15 @@ public class TaskController {
 
     @GetMapping("/formUpdate/{id}")
     public String formUpdate(Model model, @PathVariable int id, HttpSession session) {
+        model.addAttribute("priorities", priorityService.findAll());
+        model.addAttribute("categories", categoryService.findAll());
         return findById(model, id, "/tasks/edit", session);
     }
 
     @PostMapping("/update")
-    public String update(Model model, @ModelAttribute Task task) {
+    public String update(Model model, @ModelAttribute Task task, @RequestParam("categories.ids") List<Integer> categoriesId) {
+        task.setPriority(priorityService.findById(task.getPriority().getId()).get());
+        task.setCategories(categoryService.findCategoryByIdList(categoriesId));
       var isUpdate = taskService.update(task, task.getId());
         if (!isUpdate) {
             model.addAttribute("message", "Задание с указанным идентификатором не найдено");
@@ -67,13 +71,9 @@ public class TaskController {
     }
 
     @PostMapping("/create")
-    public String create(@ModelAttribute Task task, HttpServletRequest req) {
-        HttpSession session = req.getSession();
-        String[] arrayString = (String[]) session.getAttribute("task.categories");
-        List<Integer> integerList = new ArrayList<>();
-        Arrays.stream(arrayString).mapToInt(Integer::parseInt).forEach(integerList::add);
+    public String create(@ModelAttribute Task task, @RequestParam("categories.ids") List<Integer> categoriesId) {
         task.setPriority(priorityService.findById(task.getPriority().getId()).get());
-        task.setCategories(categoryService.findCategoryByIdList(integerList));
+        task.setCategories(categoryService.findCategoryByIdList(categoriesId));
         taskService.add(task);
         return "redirect:/tasks/list";
     }
