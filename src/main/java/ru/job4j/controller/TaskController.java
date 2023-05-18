@@ -4,7 +4,6 @@ import net.jcip.annotations.ThreadSafe;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import ru.job4j.model.Category;
 import ru.job4j.model.Priority;
 import ru.job4j.model.Task;
 import ru.job4j.model.User;
@@ -13,11 +12,9 @@ import ru.job4j.service.PriorityService;
 import ru.job4j.service.TaskService;
 import ru.job4j.utilites.Sessions;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @ThreadSafe
