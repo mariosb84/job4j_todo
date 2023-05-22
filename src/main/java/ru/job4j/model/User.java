@@ -29,6 +29,11 @@ public class User {
     @Setter
     @Getter
     private String password;
+    @NonNull
+    @Setter
+    @Getter
+    @Column(name="user_zone")
+    private String timezone;
 
     }
 

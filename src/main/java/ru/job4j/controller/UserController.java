@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.job4j.model.User;
 import ru.job4j.service.UserService;
 import ru.job4j.utilites.Sessions;
+import ru.job4j.utilites.TimeZones;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -28,16 +29,19 @@ public class UserController {
     public String addUser(Model model, @RequestParam(name = "fail", required = false) Boolean fail,
                           @RequestParam(name = "success", required = false) Boolean success, HttpSession session) {
         model.addAttribute("user", new User(0, "Заполните поле",
-                "Заполните поле", "Заполните поле"));
+                "Заполните поле", "Заполните поле", "Заполните поле"));
         model.addAttribute("fail", fail != null);
         model.addAttribute("success", success != null);
+        model.addAttribute("zones", TimeZones.getTimeZones());
         Sessions.userSession(model, session);
         return "users/addUser";
     }
 
     @PostMapping("/registration")
-    public String registration(@ModelAttribute User user) {
-        Optional<User> regUser = userService.add(user);
+    public String registration(@ModelAttribute User user, @RequestParam("user.zone") String zone) {
+        Optional<User> regUser;
+        user.setTimezone(zone);
+        regUser = userService.add(user);
         if (regUser.isEmpty()) {
             return "redirect:/users/formAddUser?fail=true";
         }
