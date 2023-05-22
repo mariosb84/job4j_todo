@@ -32,7 +32,7 @@ public class User {
     @NonNull
     @Setter
     @Getter
-    @Column(name="user_zone")
+    @Column(name = "user_zone")
     private String timezone;
 
     }
