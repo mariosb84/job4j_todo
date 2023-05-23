@@ -1,5 +1,8 @@
 package ru.job4j.utilites;
 
+import ru.job4j.model.Task;
+
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TimeZone;
@@ -17,4 +20,21 @@ public class TimeZones {
         }
         return list;
     }
+
+    public static Task changeTimeZoneTask(Task task) {
+        if (task.getUser().getTimezone().equals("")) {
+            task.setCreated(task.getCreated().
+                    atZone(ZoneId.of("UTC+3")).
+                    withZoneSameInstant(ZoneId.of(String.valueOf(
+                            TimeZone.getDefault()))).toLocalDateTime());
+        } else {
+            task.setCreated(task.getCreated().
+                    atZone(ZoneId.of("UTC+3")).
+                    withZoneSameInstant(ZoneId.of(task.getUser().
+                            getTimezone().split(":")[0].trim())).toLocalDateTime());
+        }
+        return task;
+    }
+
 }
+
