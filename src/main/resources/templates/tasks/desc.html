@@ -9,11 +9,14 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
           integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
-            integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+            integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+            crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-            integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+            integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+            crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
-            integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+            integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+            crossorigin="anonymous"></script>
 
     <title>СЕРВИС ЗАЯВОК</title>
 </head>
@@ -25,7 +28,7 @@
             <tr>
                 <th scope="col">#</th>
                 <th scope="col">Имя</th>
-                <th scope="col">Дата создания </th>
+                <th scope="col">Дата создания</th>
                 <th scope="col">Состояние</th>
                 <th scope="col">Пользователь</th>
                 <th scope="col">Приоритет</th>
@@ -46,9 +49,13 @@
                 <td><a th:text="${task.user.name}" th:href="@{/tasks/desc/{id}(id=${task.id})}"></a></td>
                 <td><a th:text="${task.priority.name}" th:href="@{/tasks/desc/{id}(id=${task.id})}"></a></td>
                 <td>
-                    <table class="table"><tbody>
-                    <tr th:each="category: ${task.categories}"><td><a th:text="${category.name}" th:href="@{/tasks/desc/{id}(id=${task.id})}"></a></td></tr>
-                    </tbody></table>
+                    <table class="table">
+                        <tbody>
+                        <tr th:each="category: ${task.categories}">
+                            <td><a th:text="${category.name}" th:href="@{/tasks/desc/{id}(id=${task.id})}"></a></td>
+                        </tr>
+                        </tbody>
+                    </table>
                 </td>
             </tr>
             </tbody>
@@ -78,11 +85,14 @@
         <div class="col-6">
             <div class="col-6"></div>
             <div class="row">
-    <div class="col-4"><a class="btn btn btn-success w-100" th:href="@{/tasks/done/{id}(id=${task.id})}">Выполнено</a></div>
-    <div class="col-4"><a class="btn btn-primary w-100" th:href="@{/tasks/formUpdate/{id}(id=${task.id})}">Отредактировать</a></div>
-    <div class="col-4"><a class="btn btn-danger w-100" th:href="@{/tasks/delete/{id}(id=${task.id})}">Удалить</a></div>
-         </div>
-       </div>
+                <div class="col-4"><a class="btn btn btn-success w-100" th:href="@{/tasks/done/{id}(id=${task.id})}">Выполнено</a>
+                </div>
+                <div class="col-4"><a class="btn btn-primary w-100" th:href="@{/tasks/formUpdate/{id}(id=${task.id})}">Отредактировать</a>
+                </div>
+                <div class="col-4"><a class="btn btn-danger w-100" th:href="@{/tasks/delete/{id}(id=${task.id})}">Удалить</a>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 </body>
