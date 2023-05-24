@@ -22,7 +22,7 @@ public class TimeZones {
     }
 
     public static Task changeTimeZoneTask(Task task) {
-        if (task.getUser().getTimezone().equals("")) {
+        if (("").equals(task.getUser().getTimezone())) {
             task.setCreated(task.getCreated().
                     atZone(ZoneId.of("UTC+3")).
                     withZoneSameInstant(ZoneId.of(String.valueOf(
